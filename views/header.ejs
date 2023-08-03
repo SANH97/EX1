@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Node.js 서점예시</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+</head>
+<body>
+    <div class="container" style="padding-top: 10px;">
+        <nav class="navbar navbar-inverse"> 
+            <div class="container-fluid"> 
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand">홈</a>
+                </div> 
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
+                    <ul class="nav navbar-nav">
+                        <% if(typeof(userData)!=='undefined' && userData.email==='joy@naver.com'){%>
+                            <li><a href="/admin/products">ADMIN</a></li>
+                        <%}%>
+                        <% if(isLogin){%>
+                            <li><a href="/cart">장바구니</a></li>
+                            <li><a href="/accounts/logout" onclick="return confirm('로그아웃 하시겠습니까?')">로그아웃</a></li>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="/checkout/search">구매조회</a></li> 
+                            </ul>
+                        <%}else{%> 
+                            <li><a href="/accounts/join">회원가입</a></li> 
+                            <li><a href="/accounts/login">로그인</a></li>  
+                        <%}%>
+                    </ul> 
+                    
+                </div> 
+            </div> 
+        </nav>

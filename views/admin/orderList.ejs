@@ -1,0 +1,32 @@
+<%- include ('../header.ejs') -%>
+
+    <%- include ('./sidebar.ejs') -%>
+
+    <div class="col-sm-10">
+
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>주문자</th>
+                <th>결재상태</th>
+                <th>금액</th>
+                <th>주소</th>
+                <th>주문일</th>
+            </tr>
+            <% orderList.forEach( function(order){ %>
+            <tr>
+                <td>
+                    <a href="/admin/order/edit/<%=order.order_id%>">
+                        <%=order.name%> 
+                </td>
+                <td>
+                    <%=order.status%> 
+                </td>
+                <td><%=order.price%>원</td>
+                <td><%=order.address%></td>
+                <td><%=order.created_at%></td>
+            </tr>
+            <%});%>
+        </table>
+    </div>
+
+    

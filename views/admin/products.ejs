@@ -1,0 +1,52 @@
+<%- include ('../header.ejs') -%>
+
+    <%- include ('./sidebar.ejs') -%>
+
+    <div class="col-sm-10">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>제목</th>
+                <th>가격</th>
+                <th>설명</th>
+                <th>작성일</th>
+                <th>삭제</th>
+            </tr>
+            <% products.forEach( function(product){ %>
+            <tr>
+                <td>
+                    <a href="/admin/products/detail/<%=product.product_id%>"><%=product.product_name%></a>
+                </td>
+                <td>
+                    <%=product.product_price%>원
+                </td>
+                <td>
+                    <%=product.product_detail%>
+                </td>
+                <td>
+                    <%=product.created_at%>
+                </td>
+                <td>
+                    <a href="/admin/products/delete/<%=product.product_id%>" class="btn btn-danger" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+                </td>
+            </tr>
+            <%});%>
+        </table>
+        <%
+        var endPage = pasing.endPage;
+        var startPage = pasing.startPage;
+        var totalPage = pasing.totalPage;
+        var curPage = pasing.curPage;
+    %>
+    <div class="paging">
+        <%for(var i = startPage; i <= endPage; i++){ 
+                if(i > totalPage){break;}
+                if(i == curPage){
+        %>
+                <span><a style="color: red" class="on" href="/admin/products?page=<%= i %>" ><%= i %></a></span>
+               <%}else{%>
+                <span><a href="/admin/products?page=<%= i %>"><%= i %></a></span>
+               <%}%>
+        <%}%>
+</div>
+    <a href="/admin/products/write" class="btn btn-primary">작성</a>
+</div>

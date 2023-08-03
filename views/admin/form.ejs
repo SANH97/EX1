@@ -1,0 +1,61 @@
+<%- include ('../header.ejs') -%>
+
+    <%- include ('./sidebar.ejs') -%>
+
+    <div class="col-sm-10">
+        <form id="editForm" action="" method="post"enctype="multipart/form-data" >
+            <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+            <table class="table table-bordered">
+                <tr>
+                    <th>제목</th>
+                    <td><input type="text" name="name" class="form-control" value="<%=product.product_name%>"></td>
+                </tr>
+                <tr>
+                    <th>장르</th>
+                    <td>
+                        <select name="genre">
+                            <option value="romance">로맨스</option>
+                            <option value="fantasy">판타지</option>
+                            <option value="essay">에세이</option>
+                            <option value="cartoon">카툰</option>
+                            <option value="horror">호러</option>
+                        </select>    
+                    </td>
+                </tr>
+                <tr>
+                    <th>이미지</th>
+                    <td>
+                        <input type="file" name="thumbnail" />
+                        <% if(product.product_img){ %>
+                        <a href="/uploads/<%=product.product_img%>" target="_blank"> 이미지 보기</a>
+                        <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>가격</th>
+                    <td><input type="text" name="price" class="form-control" value="<%=product.product_price%>"></td>
+                </tr>
+                <tr>
+                    <th>재고</th>
+                    <td><input type="text" name="stock" class="form-control" value="<%=product.product_stock%>"></td>
+                </tr>
+                <tr>
+                    <th>설명</th>
+                    <td>
+                        <textarea name="detail" class="form-control" id="summernote"><%-product.product_detail%></textarea>
+                    </td>
+                </tr>
+            </table>
+            <button class="btn btn-primary">작성하기</button>
+            <a href="/admin/products" class="btn btn-default">목록으로</a>
+        </form>
+    </div>
+
+<!-- 스타일관련 -->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.css" rel="stylesheet">
+<!-- 자바스크립트관련 -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.js"></script>
+<!-- 한글관련 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/lang/summernote-ko-KR.min.js"></script>
+
+

@@ -1,0 +1,118 @@
+<%- include ('../header.ejs') -%>
+    <h3 class="page-header">결제페이지</h3>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th></th>
+            <th>제품명</th>
+            <th>갯수</th>
+            <th>가격</th>
+        </tr>
+        <% var totalAmount = 0 %>
+        <% 
+            if( Object.keys(cartList).length ){ 
+                for( let key in cartList){
+                    totalAmount += parseInt(cartList[key].product_count*cartList[key].product_price);
+        %>
+            <tr>
+                <td>
+                    <img src="/uploads/<%=cartList[key].product_img%>" alt="" width="50" height="50" />
+                </td>
+                <td><%=cartList[key].product_name%></td>
+                <td><%=cartList[key].product_count%></td>
+                <td><%=cartList[key].product_price%> 원</td>
+            </tr>
+        <%
+                } //end for
+            }else{
+        %>
+            <tr>
+                <td colspan="4" style="text-align:center">장바구니에 아무것도 안담겼습니다.</td>
+            </tr>
+        <%}%>
+    </table>
+
+
+    <div class="text-center" style="font-size:30px; margin-bottom:20px;">
+        결제금액 : <span style="color:red"> <%=totalAmount%> </span> 원
+    </div>
+    <a href="/checkout/address">배송지변경</a>
+    <form action="" id="orderForm">
+        <h3 class="text-center">받는사람정보</h3>
+        <% addresses.forEach(function(address){ %>
+        <table id="id" class="table table-bordered table-hover" style="max-width:500px; margin:0 auto;">
+            <tbody>
+                <tr>
+                    <th>받는사람</th>
+                    <td><%=address.name%></td>
+                </tr>
+                <tr>
+                    <th>연락쳐</th>
+                    <td><%=address.tel%></td>
+                </tr>
+                <tr>
+                    <th>주소</th>
+                    <td><%=address.address%></td>             
+                </tr>
+                <tr>
+                    <th>상세주소</th>
+                    <td><%=address.address_detail%></td>          
+                </tr>
+                <tr>
+                    <th>우편번호</th>
+                    <td><%=address.zipcode%></td>
+                </tr>
+                <tr>
+                    <th >요청사항</th>
+                    <td><%=address.req%> </td>
+                </tr>
+            </tbody>
+        </table>
+        <%});%>
+        <div class="text-center" style="margin : 30px 0 100px 0">
+            <button class="btn btn-primary">구매하기</button>
+        </div>
+    </form> 
+	<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script>
+    <% addresses.forEach(function(address){ %>
+    $(document).ready(function(){
+        $('#orderForm').submit(function(){
+            var amount = <%=totalAmount%>;
+            var email = '<%=user.email%>';
+            var name ='<%=address.name%>';
+            var tel = '<%=address.tel%>';   
+            // var buyer_addr = $('input[name=buyer_addr]').val();
+            var address ='<%=address.address%>' + ' / ' +'<%=address.address_detail%>';
+            var zipcode ='<%=address.zipcode%>';
+    
+            var IMP = window.IMP; 
+            IMP.init("imp25527651"); 
+            //아임포트 사이트에서 받아온다( http://www.iamport.kr/ )
+            IMP.request_pay({
+                pg : 'inicis',
+                pay_method : 'card',
+                merchant_uid : 'merchant_' + new Date().getTime(),
+                name : '결제테스트',
+                amount : amount ,
+                buyer_email : email,
+                buyer_name : name,
+                buyer_tel : tel,
+                buyer_addr : address,
+                buyer_postcode : zipcode,
+                    }, function(rsp){
+                if ( rsp.success ) {
+                    document.location.href = "/checkout/complete?imp_uid=" + rsp.imp_uid;
+                } else {
+                    let msg = '결제에 실패하였습니다.';
+                    msg += '에러내용 : ' + rsp.error_msg;
+                    alert(msg);
+                }
+            });
+            return false;
+        });
+    });
+    <%});%>
+</script>
